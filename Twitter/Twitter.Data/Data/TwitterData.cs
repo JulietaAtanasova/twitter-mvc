@@ -9,11 +9,11 @@
 
     public class TwitterData : ITwitterData
     {
-        public DbContext context;
+        public IApplicationDbContext context;
 
         private IDictionary<Type, object> repositories;
 
-        public TwitterData(DbContext context)
+        public TwitterData(IApplicationDbContext context)
         {
             this.context = context;
             this.repositories = new Dictionary<Type, object>();

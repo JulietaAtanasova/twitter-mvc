@@ -14,9 +14,6 @@ namespace Twitter.Web.Controllers
 {
     public class TweetsController : BaseController
     {
-        public TweetsController()
-        {
-        }
 
         public TweetsController(ITwitterData data) 
             : base(data)
@@ -26,7 +23,7 @@ namespace Twitter.Web.Controllers
         // GET: Tweets
         public ActionResult Index()
         {
-            var tweets = Db.Tweets.Include(t => t.Author);
+            var tweets = Data.Tweet.All().Include(t => t.Author);
             return View(tweets.ToList());
         }
 
@@ -37,7 +34,7 @@ namespace Twitter.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tweet tweet = Db.Tweets.Find(id);
+            Tweet tweet = Data.Tweet.Find(id);
             if (tweet == null)
             {
                 return HttpNotFound();
@@ -48,7 +45,7 @@ namespace Twitter.Web.Controllers
         // GET: Tweets/Create
         public ActionResult Create()
         {
-            ViewBag.AuthorId = new SelectList(Db.Users, "Id", "Email");
+            ViewBag.AuthorId = new SelectList(Data.User.All(), "Id", "Email");
             return View();
         }
 
@@ -61,12 +58,12 @@ namespace Twitter.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Db.Tweets.Add(tweet);
-                Db.SaveChanges();
+                Data.Tweet.Add(tweet);
+                Data.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.AuthorId = new SelectList(Db.Users, "Id", "Email", tweet.AuthorId);
+            ViewBag.AuthorId = new SelectList(Data.User.All(), "Id", "Email", tweet.AuthorId);
             return View(tweet);
         }
 
@@ -77,12 +74,12 @@ namespace Twitter.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tweet tweet = Db.Tweets.Find(id);
+            Tweet tweet = Data.Tweet.Find(id);
             if (tweet == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AuthorId = new SelectList(Db.Users, "Id", "Email", tweet.AuthorId);
+            ViewBag.AuthorId = new SelectList(Data.User.All(), "Id", "Email", tweet.AuthorId);
             return View(tweet);
         }
 
@@ -95,11 +92,11 @@ namespace Twitter.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Db.Entry(tweet).State = EntityState.Modified;
-                Db.SaveChanges();
+                Data.Tweet.Update(tweet);
+                Data.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AuthorId = new SelectList(Db.Users, "Id", "Email", tweet.AuthorId);
+            ViewBag.AuthorId = new SelectList(Data.User.All(), "Id", "Email", tweet.AuthorId);
             return View(tweet);
         }
 
@@ -110,7 +107,7 @@ namespace Twitter.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tweet tweet = Db.Tweets.Find(id);
+            Tweet tweet = Data.Tweet.Find(id);
             if (tweet == null)
             {
                 return HttpNotFound();
@@ -123,9 +120,9 @@ namespace Twitter.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Tweet tweet = Db.Tweets.Find(id);
-            Db.Tweets.Remove(tweet);
-            Db.SaveChanges();
+            Tweet tweet = Data.Tweet.Find(id);
+            Data.Tweet.Delete(tweet);
+            Data.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -133,7 +130,7 @@ namespace Twitter.Web.Controllers
         {
             if (disposing)
             {
-                Db.Dispose();
+                //Data.Dispose();
             }
             base.Dispose(disposing);
         }

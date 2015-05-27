@@ -6,7 +6,7 @@
 
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
     {
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -25,8 +25,6 @@
         public IDbSet<Retweet> Retweets { get; set; }
  
         public IDbSet<Tweet> Tweets { get; set; }
-
-        //public System.Data.Entity.DbSet<Twitter.Models.ApplicationUser> ApplicationUsers { get; set; }
 
     }
 }

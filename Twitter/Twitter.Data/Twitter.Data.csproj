@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IApplicationDbContext.cs" />
     <Compile Include="Data\ITwitterData.cs" />
     <Compile Include="Data\TwitterData.cs" />
     <Compile Include="Migrations\Configuration.cs" />

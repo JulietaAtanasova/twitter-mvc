@@ -8,22 +8,16 @@ using Twitter.Data.Data;
 
 namespace Twitter.Web.Controllers
 {
-    public class BaseController : Controller
+    public abstract class BaseController : Controller
     {
 
-        private ApplicationDbContext db = new ApplicationDbContext();
         private ITwitterData data;
-
-        protected BaseController()
-        {
-        }
 
         protected BaseController(ITwitterData data)
         {
             this.data = data;
         }
 
-        private ITwitterData Data { get { return this.data; } }
-        public ApplicationDbContext Db { get { return this.db; } }
+        protected ITwitterData Data { get { return this.data; } }
     }
 }
